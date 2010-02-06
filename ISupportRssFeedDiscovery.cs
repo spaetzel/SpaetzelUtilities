@@ -15,7 +15,7 @@ namespace Spaetzel.UtilityLibrary
         /// Gets a <see cref="String"/> which contains the 
         /// URL of the RSS feed.
         /// </summary>
-        String RssFeedUrl
+        Uri RssFeedUrl
         { get; }
 
         /// <summary>

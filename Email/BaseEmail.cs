@@ -91,6 +91,11 @@ namespace Spaetzel.UtilityLibrary.Email
 
         public bool Send()
         {
+            return Send(true);
+        }
+
+        public bool Send(bool logEmail )
+        {
          
 
             Message.Body = GetBody();
@@ -117,7 +122,10 @@ namespace Spaetzel.UtilityLibrary.Email
 
                 client.Send(Message);
 
-                Emails.LogSentEmail(this);
+                if (logEmail)
+                {
+                    Emails.LogSentEmail(this);
+                }
 
                 return true;
             }

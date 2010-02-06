@@ -14,6 +14,23 @@ namespace Spaetzel.UtilityLibrary.Email
         private static int _smtpPort = 25;
         private static string _alertEmail = "alert@redune.com";
         private static string _bccEmail = "";
+        private static string _warningEmail;
+
+        public static string WarningEmail
+        {
+            get
+            {
+                if (_warningEmail.IsNullOrEmpty())
+                {
+                    _warningEmail = AlertEmail;
+                }
+                return _warningEmail;
+            }
+            set
+            {
+                _warningEmail = value;
+            }
+        }
 
         public static string BccEmail
         {
@@ -64,8 +81,9 @@ namespace Spaetzel.UtilityLibrary.Email
 
      
 
-        public static void SetConfigurations( string connectionString, string smtpServer, string username, string password, int port)
+        public static void SetConfigurations( string alertEmail, string connectionString, string smtpServer, string username, string password, int port)
         {
+            AlertEmail = alertEmail;
             _connectionString = connectionString;
             _smtpServer = smtpServer;
             _smtpUsername = username;

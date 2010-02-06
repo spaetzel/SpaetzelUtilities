@@ -16,6 +16,18 @@ namespace Spaetzel.UtilityLibrary
 {
     public static class Utilities
     {
+        public static bool IsNullOrEmpty(this Uri test)
+        {
+            if (test == null)
+            {
+                return true;
+            }
+            else
+            {
+                return String.IsNullOrEmpty(test.ToString().Trim());
+            }
+        }
+
         public static bool IsNullOrEmpty( this string test )
         {
             if (test == null)
@@ -27,6 +39,19 @@ namespace Spaetzel.UtilityLibrary
                 return String.IsNullOrEmpty(test.Trim() );
             }
         }
+
+        public static int ConvertToInt32(string stringValue)
+        {
+            try
+            {
+                return Convert.ToInt32(stringValue);
+            }
+            catch
+            {
+                return 0;
+            }
+        }
+
 
         public static string EmailRegex
         {
@@ -204,7 +229,22 @@ namespace Spaetzel.UtilityLibrary
         }
         public static string FormatDateTime(DateTime date)
         {
-            return FormatDate(date) + " " + date.ToString("h:mm tt");
+            var difference = DateTime.Now - date;
+
+            if( difference < new TimeSpan( 24, 0, 0 ) )
+            {
+                if( difference < new TimeSpan( 0, 2, 0 ) )
+                {
+                    return "Just now";
+                }
+                else if( difference < new TimeSpan( 2, 0, 0 ) )
+                {
+                    return String.Format( "{0} minutes ago", difference.Minutes );
+                }else{
+                    return String.Format("{0} hours ago", difference.Hours );
+                }
+            }
+            return FormatDate(date) + " at " + date.ToString("h:mm tt");
         }
 
         public static string FormatDateTime(DateTime? date)
@@ -219,30 +259,42 @@ namespace Spaetzel.UtilityLibrary
             }
         }
 
-       
 
+
+    
         /// <summary>
         /// Adds the Base url for the site to the front of the given path, turning it into an absolute URL
         /// </summary>
         /// <param name="path"></param>
-        public static string BaseifyUrl(string url)
+        public static Uri BaseifyUrl(string uri)
         {
             string baseUrl = Utilities.GetAppConfig("BaseUrl");
 
+        
 
-            if (url[0] != '/')
-            {
-               url = string.Format("/{0}", url);
-            }
 
-            if (baseUrl != "/")
-            {
-                return String.Format("{0}{1}", baseUrl, url);
-            }
-            else
-            {
-                return url;
-            }
+            Uri output = new Uri(new Uri(baseUrl), uri);
+
+            return output;
+
+            //if( baseUrl.IsNullOrEmpty() )
+            //{
+            //    ServerValidateEventArgs.
+            //    baseUrl = System.Web.se
+
+            //if (url[0] != '/')
+            //{
+            //   url = string.Format("/{0}", url);
+            //}
+
+            //if (baseUrl != "/")
+            //{
+            //    return String.Format("{0}{1}", baseUrl, url);
+            //}
+            //else
+            //{
+            //    return url;
+            //}
         }
 
         public static string GetFilenameExtension(string fileName)
@@ -256,10 +308,14 @@ namespace Spaetzel.UtilityLibrary
 
             return extension;
         }
-
         public static string DownloadFile(string directory, string url)
         {
-            if (url.Length > 0)
+            return DownloadFile(directory, new Uri(url));
+        }
+
+        public static string DownloadFile(string directory, Uri url)
+        {
+            if (!url.IsNullOrEmpty() )
             {
                 if (!Directory.Exists(directory))
                 {
@@ -269,10 +325,10 @@ namespace Spaetzel.UtilityLibrary
 
            //     string fileName = url.Substring(url.LastIndexOf("/") + 1);
 
-                string extension = Utilities.GetFilenameExtension(url);
+                string extension = Utilities.GetFilenameExtension(url.ToString());
                     
 
-                string fileName = CalculateMd5Hash(url) + "." + extension;
+                string fileName = CalculateMd5Hash(url.ToString()) + "." + extension;
 
                 System.Net.WebClient client = new System.Net.WebClient();
 
@@ -285,9 +341,9 @@ namespace Spaetzel.UtilityLibrary
                     try
                     {
 
-                        client.DownloadFile(url.Trim(), fullPath.Trim());
+                        client.DownloadFile(url, fullPath.Trim());
                     }
-                    catch (WebException ex)
+                    catch (WebException)
                     {
                         // Got a 404 or 500 from the site
                         return "";
@@ -371,9 +427,9 @@ namespace Spaetzel.UtilityLibrary
             }
         }
 
-        public static List<string> AutodetectFeeds(string url)
+        public static IEnumerable<Uri> AutodetectFeeds(Uri url)
         {
-            List<string> output = new List<string>();
+            List<Uri> output = new List<Uri>();
             try
             {
                 WebClient client = new WebClient();
@@ -397,7 +453,7 @@ namespace Spaetzel.UtilityLibrary
                         Match htmls = urlPattern.Match(curLink);
 
 
-                        output.Add(htmls.Groups[1].Value);
+                        output.Add( new Uri (htmls.Groups[1].Value) );
                     }
                 }
 

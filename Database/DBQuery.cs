@@ -197,7 +197,17 @@ namespace Spaetzel.UtilityLibrary.Database
             {
                 case CommandType.Count:
                     begin = "SELECT";
-                    select = "COUNT(*)";
+                  
+
+                    if (ExtraSelect == null)
+                    {
+                        select = "COUNT(*)";
+                    }
+                    else
+                    {
+                        select = String.Format("COUNT(*), {1}", MainTable, ExtraSelect);
+                    }
+
                     break;
                 case CommandType.Select:
                     begin = "SELECT DISTINCT";

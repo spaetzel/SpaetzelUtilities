@@ -29,7 +29,7 @@ namespace Spaetzel.UtilityLibrary.Types
         public virtual string ShortName
         {
             get {
-                if ((_shortName == "" && Name != "" ) || ( _shortName.Contains("Untitled") && !Name.Contains("Untitles") ) )
+                if ((_shortName == "" && Name != "" ) || ( _shortName.Contains("Untitled") && !Name.Contains("Untitled") ) )
                 {
                     string[] words = Name.StripTags().StripNonAlphabet().ToLower().Split(' ');
 
@@ -133,11 +133,11 @@ namespace Spaetzel.UtilityLibrary.Types
         /// <summary>
         /// The local path that can be followed to see more about this object
         /// </summary>
-        public virtual string ViewPath
+        public virtual Uri ViewPath
         {
             get
             {
-                return "";
+                return null;
             }
             set
             {

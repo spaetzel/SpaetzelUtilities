@@ -126,7 +126,7 @@ namespace Spaetzel.UtilityLibrary
                 if (_connection.State == ConnectionState.Open)
                     _connection.Close();
 
-                _connection.Dispose();
+               _connection.Dispose();
             }
         }
 
