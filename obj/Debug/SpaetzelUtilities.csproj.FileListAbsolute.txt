@@ -1,6 +1,5 @@
-C:\Users\wspaetzel\Documents\Projects\SpaetzelUtilities\bin\Debug\SpaetzelUtilities.dll
-C:\Users\wspaetzel\Documents\Projects\SpaetzelUtilities\bin\Debug\SpaetzelUtilities.pdb
-C:\Users\wspaetzel\Documents\Projects\SpaetzelUtilities\bin\Debug\MySql.Data.dll
-C:\Users\wspaetzel\Documents\Projects\SpaetzelUtilities\obj\Debug\ResolveAssemblyReference.cache
-C:\Users\wspaetzel\Documents\Projects\SpaetzelUtilities\obj\Debug\SpaetzelUtilities.dll
-C:\Users\wspaetzel\Documents\Projects\SpaetzelUtilities\obj\Debug\SpaetzelUtilities.pdb
+\\psf\Home\Documents\Projects\CastRoller\Libraries\SpaetzelUtilities\bin\Debug\SpaetzelUtilities.dll
+\\psf\Home\Documents\Projects\CastRoller\Libraries\SpaetzelUtilities\bin\Debug\SpaetzelUtilities.pdb
+\\psf\Home\Documents\Projects\CastRoller\Libraries\SpaetzelUtilities\obj\Debug\ResolveAssemblyReference.cache
+\\psf\Home\Documents\Projects\CastRoller\Libraries\SpaetzelUtilities\obj\Debug\SpaetzelUtilities.dll
+\\psf\Home\Documents\Projects\CastRoller\Libraries\SpaetzelUtilities\obj\Debug\SpaetzelUtilities.pdb

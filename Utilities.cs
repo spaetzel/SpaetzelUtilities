@@ -223,13 +223,13 @@ namespace Spaetzel.UtilityLibrary
         {
             System.Globalization.DateTimeFormatInfo dtfi = new System.Globalization.DateTimeFormatInfo();
 
-            string output = DateTime.Now.ToUniversalTime().ToString(dtfi.RFC1123Pattern);
+            string output = DateTime.UtcNow.ToUniversalTime().ToString(dtfi.RFC1123Pattern);
 
             return output;
         }
         public static string FormatDateTime(DateTime date)
         {
-            var difference = DateTime.Now - date;
+            var difference = DateTime.UtcNow - date;
 
             if( difference < new TimeSpan( 24, 0, 0 ) )
             {
@@ -340,7 +340,7 @@ namespace Spaetzel.UtilityLibrary
 
                     try
                     {
-
+ 
                         client.DownloadFile(url, fullPath.Trim());
                     }
                     catch (WebException)
@@ -881,7 +881,7 @@ namespace Spaetzel.UtilityLibrary
 	"SH St. Helena",
 	"PM St. Pierre and Miquelon",
 	"VC St. Vincent and the Grenadines",
-	"SR Suriname",
+	"SR Uriname",
 	"SJ Svalbard and Jan Mayen Islands",
 	"SZ Swaziland",
 
@@ -998,7 +998,7 @@ namespace Spaetzel.UtilityLibrary
             cookie.Value = value;
 
             //Set the cookie to expire in 1 minute
-            DateTime dtNow = DateTime.Now;
+            DateTime dtNow = DateTime.UtcNow;
           
             cookie.Expires = dtNow + expires;
 
@@ -1022,7 +1022,7 @@ namespace Spaetzel.UtilityLibrary
             cookie.Value = "";
 
             //Set the cookie to expire in 1 minute
-            DateTime dtNow = DateTime.Now;
+            DateTime dtNow = DateTime.UtcNow;
 
             cookie.Expires = dtNow + new TimeSpan(-1,0,0);
 
@@ -1033,7 +1033,14 @@ namespace Spaetzel.UtilityLibrary
 
         public static string GetCookieValue(string cookieName)
         {
-            return HttpContext.Current.Request.Cookies[cookieName].Value;
+            if (HttpContext.Current.Request.Cookies[cookieName] == null)
+            {
+                return null;
+            }
+            else
+            {
+                return HttpContext.Current.Request.Cookies[cookieName].Value;
+            }
         }
 
         public static string HttpPost(string uri, string username, string password, string parameters)
@@ -1154,5 +1161,27 @@ namespace Spaetzel.UtilityLibrary
                 return url;
             }
         }
+
+        public static string GenerateDownloadHash(int userId)
+        {
+            string source = String.Format("{0}{1}", userId, Utilities.GetAppConfig("DownloadHash"));
+
+            string actualHash = Utilities.CalculateMd5Hash(source);
+
+            return actualHash;
+        }
+
+        public static string GenerateFeedUrl(int userId, string baseUrl)
+        {
+            if (userId > 0)
+            {
+                return String.Format("{0}?uid={1}&hash={2}", baseUrl, userId, GenerateDownloadHash(userId));
+            }
+            else
+            {
+                return baseUrl;
+            }
+        }
+
     }
 }

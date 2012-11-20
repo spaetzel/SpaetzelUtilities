@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 
 /*
-namespace Spaetzel.UtilityLibrary.HtmlCleaner
+namespace CastRollerDA.HtmlCleaner
 {
     /// <summary>
     /// This comes from here http://netcode.ru/dotnet/?artID=7730
